@@ -45,4 +45,76 @@ def construireCellule(content: int = 0, visible: bool = False) -> dict :
     if type(visible) != bool :
         raise TypeError(f"onstruireCellule : le contenu {visible} n'est pas un booléen")
 
-    return { const.CONTENU : content, const.VISIBLE : visible } 
+    return { const.CONTENU : content, const.VISIBLE : visible }
+
+def getContenuCellule(cellule: dict) -> int :
+    """
+    Cette fonction récupère le contenu d'une cellule
+
+    :param cellule: dictionnaire représentant la cellule
+    :return: entier étant le contenu de la cellule
+    """
+    if type_cellule(cellule) != True :
+        raise TypeError("getContenuCellule : Le paramètre n’est pas une cellule")
+    return cellule[const.CONTENU]
+
+def isVisibleCellule(cellule : dict) -> bool :
+    """
+    Cette fonction vérifie if a cellule est visible ou non
+
+    :param cellule: dictionnaire représentant une cellule
+    :return: True si la cellule est visible, False si elle ne l'est pas
+    """
+    if type_cellule(cellule) != True :
+        raise TypeError("isVisibleCellule : Le paramètre n’est pas une cellule")
+
+    return cellule[const.VISIBLE]
+
+def setContenuCellule(cellule: dict, content: int) -> None:
+    """
+    Cette fonction permet de modifier le contenu d'une cellule déjà existante
+
+    :param cellule: dictionnaire représentant une cellule
+    :param content: Un entier entre 0 et 8 inclus ou ayant la valeur de const.ID_MINE
+    :return: La fonction ne renvoie rien
+    """
+
+    if type(content) != int :
+        raise TypeError("setContenuCellule : Le second paramètre n’est pas un entier.")
+    if content > 8 or content < 0 and content != const.ID_MINE:
+        raise ValueError(f"setContenuCellule : la valeur du contenu {content} n’est pas correcte.")
+    if type_cellule(cellule) != True :
+        raise TypeError("setContenuCellule : Le premier paramètre n’est pas une cellule.")
+
+    cellule[const.CONTENU] = content
+
+    return None
+
+def setVisibleCellule(cellule: dict, visible: bool) -> None :
+    """
+    Cette fonction permet de modifier la visibilité d'une cellule déjà éxistante
+
+    :param cellule: dictionnaire représentant une cellule
+    :param visible: booléen donnant la visibilité de la cellule
+    :return: Rien
+    """
+    if type_cellule(cellule) != True :
+        raise TypeError("setVisibleCellule : Le premier paramètre n’est pas une cellule.")
+    if type(visible) != bool :
+        raise TypeError("setVisibleCellule : Le second paramètre n’est pas un booléen")
+    cellule[const.VISIBLE] = visible
+
+    return None
+
+def contientMineCellule(cellule: dict) -> bool :
+    """
+    Cette fonction permet de vérifier si contient une mine ou non
+
+    :param cellule: dictionnaire représentant une cellule
+    :return: True si la cellule contient une mine, False si la cellule n'en contient pas
+    """
+    if type_cellule(cellule) != True :
+        raise TypeError("contientMineCellule : Le paramètre n’est pas une cellule")
+
+    return cellule[const.CONTENU] == const.ID_MINE
+
