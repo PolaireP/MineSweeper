@@ -31,3 +31,18 @@ def isContenuCorrect(content: int) -> bool:
         ret = ( content <= 8 and content >= 0 ) or content == const.ID_MINE
 
     return ret
+
+def construireCellule(content: int = 0, visible: bool = False) -> dict :
+    """
+    Cette fonction créer une cellule à partir d'un entier et d'un booléen.
+
+    :param content: entier représentant le contenu de la cellule
+    :param visible: booléen donnant la visibilité de la cellule
+    :return: cellule final sous forme d'un dictionnaire
+    """
+    if isContenuCorrect(content) != True :
+        raise ValueError(f"construireCellule : le contenu {content} n'est pas correct")
+    if type(visible) != bool :
+        raise TypeError(f"onstruireCellule : le contenu {visible} n'est pas un booléen")
+
+    return { const.CONTENU : content, const.VISIBLE : visible }
