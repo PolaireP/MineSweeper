@@ -45,4 +45,4 @@ def construireCellule(content: int = 0, visible: bool = False) -> dict :
     if type(visible) != bool :
         raise TypeError(f"onstruireCellule : le contenu {visible} n'est pas un booléen")
 
-    return { const.CONTENU : content, const.VISIBLE : visible }
+    return { const.CONTENU : content, const.VISIBLE : visible } 
