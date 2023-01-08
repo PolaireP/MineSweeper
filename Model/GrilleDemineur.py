@@ -51,4 +51,23 @@ def type_grille_demineur(grille: list) -> bool:
     #         return False
     # return True
 
+def construireGrilleDemineur(nb_ligne: int, nb_col: int) -> list:
+    """
+    Cette fonction construit une grille à partir d'un nombre de colonne et de ligne entrés
 
+    :param nb_ligne: entier représentant le nombre de ligne
+    :param nb_col: entier représentant le nombre de colonne
+    :return: liste représentant la grille
+    """
+    if nb_ligne <= 0 or nb_col <= 0 :
+        raise ValueError(f"onstruireGrilleDemineur : Le nombre de lignes {nb_ligne} ou de colonnes {nb_col} est négatif ou nul")
+    if type(nb_col) != int or type(nb_ligne) != int :
+        raise TypeError(f" construireGrilleDemineur : Le nombre de lignes {nb_ligne} ou de colonnes {nb_col} n’est pas un entier.")
+
+    grille = []
+    for i in range(nb_ligne):
+        grille.append([])
+        for j in range(nb_col):
+            grille[i].append(construireCellule())
+
+    return grille
