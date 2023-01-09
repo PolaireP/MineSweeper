@@ -335,3 +335,17 @@ def perduGrilleDemineur(grille: list) -> bool:
             if getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == True :
                 perdu = True
     return perdu
+
+
+def reinitialiserGrilleDemineur(grille: list) -> None:
+    """
+    Cette fonction réinitialise toutes les cellules d'une grille de démineur
+
+    :param grille: grille de démineur
+    :return: Rien
+    """
+    for ligne in grille :
+        for case in ligne :
+            reinitialiserCellule(case)
+
+    return None
