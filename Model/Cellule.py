@@ -45,7 +45,7 @@ def construireCellule(content: int = 0, visible: bool = False) -> dict :
     if type(visible) != bool :
         raise TypeError(f"onstruireCellule : le contenu {visible} n'est pas un booléen")
 
-    return { const.CONTENU : content, const.VISIBLE : visible }
+    return { const.CONTENU : content, const.VISIBLE : visible, const.ANNOTATION : None }
 
 def getContenuCellule(cellule: dict) -> int :
     """
@@ -118,3 +118,10 @@ def contientMineCellule(cellule: dict) -> bool :
 
     return cellule[const.CONTENU] == const.ID_MINE
 
+def isAnnotationCorrecte(annotation: str) -> bool:
+    """
+    Cette fonction reçois une annotation et vérifie si elle est correcte
+    :param annotation: chaine de caractère
+    :return: True si elle vaut None, const.FLAG ou const.DOUTE, sinon False
+    """
+    return annotation in [None, const.FLAG, const.DOUTE]
