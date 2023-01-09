@@ -103,10 +103,11 @@ def isCoordonneeCorrecte(grille: list, coord: tuple) -> bool:
     :param coord: tuple représentant une coordonée dans la grille
     :return: True si la coordonnée est dans la grille, False si elle ne l'est pas
     """
-    if type_grille_demineur(grille) != True or type_coordonnee(coord) != True:
+    if type_grille_demineur(grille) != True or type(coord) != tuple:
         raise TypeError("isCoordonneeCorrecte : un des paramètres n’est pas du bon type.")
+
     estCoord = True
-    if coord[0] >= getNbLignesGrilleDemineur(grille) or coord[1] >= getNbColonnesGrilleDemineur(grille):
+    if coord[0] >= getNbLignesGrilleDemineur(grille) or coord[1] >= getNbColonnesGrilleDemineur(grille) or coord[0] < 0 or coord[1] < 0:
         estCoord = False
     return estCoord
 
@@ -189,3 +190,26 @@ def contientMineGrilleDemineur(grille: list, coord: tuple) -> bool:
 
     isCoordonneeCorrecte(grille, coord)
     return contientMineCellule(grille[coord[0]][coord[1]])
+
+def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
+    """
+    Cette fonction récupère les coordonnées des celulles voisines d'une cellule donnée
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :return: liste des coordonées des cellules voisines
+    """
+    if type_grille_demineur(grille) != True or type(coord) != tuple :
+        raise TypeError("getCoordonneeVoisinsGrilleDemineur : un des paramètres n’est pas du bon type.")
+    if isCoordonneeCorrecte(grille, coord) == False :
+        raise IndexError("getCoordonneeVoisinsGrilleDemineur : la coordonnée n’est pas dans la grille.")
+
+    h = coord[0]
+    v = coord[1]
+
+    voisins = []
+    for i in range(h-1, h+2):
+        for j in range(v-1, v+2):
+            if isCoordonneeCorrecte(grille, (i, j)) and (i, j) != coord:
+                voisins.append((i, j))
+    return voisins
