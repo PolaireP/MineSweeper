@@ -110,7 +110,7 @@ def isCoordonneeCorrecte(grille: list, coord: tuple) -> bool:
         estCoord = False
     return estCoord
 
-def getCelluleGrilleDemineur(grille: list, coord: tuple) -> bool:
+def getCelluleGrilleDemineur(grille: list, coord: tuple) -> dict:
     """
     Cette fonction cherche une cellule dans une grille à la coordonnée donné.
     :param grille: liste conforme à une grile de démineur
@@ -123,3 +123,69 @@ def getCelluleGrilleDemineur(grille: list, coord: tuple) -> bool:
         raise IndexError("getCelluleGrilleDemineur : coordonnée non contenue dans la grille")
 
     return grille[coord[0]][coord[1]]
+
+def getContenuGrilleDemineur(grille: list, coord: tuple) -> int:
+    """
+    Cette fonction récupère le contenu d'une cellule à une dite coordonée dans une grille
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :return: entier représentant le contenu d'une cellule à la coordonnée coord de la grille
+    """
+
+    return getCelluleGrilleDemineur(grille, coord)[const.CONTENU]
+
+def setContenuGrilleDemineur(grille: list, coord: tuple, content: int) -> None:
+    """
+    Cette fonction le contenu d'une cellulde d'une grille de démineur
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :param content: entier conforme au contenu d'une cellule
+    :return: rien
+    """
+    isCoordonneeCorrecte(grille, coord)
+    isContenuCorrect(content)
+
+    setContenuCellule(grille[coord[0]][coord[1]], content)
+
+    return None
+
+def isVisibleGrilleDemineur(grille: list, coord: tuple) -> bool:
+    """
+    Cette fonction renvoi le paramètre de visibilité d'une cellule d'une grille
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :return: True si la cellule est visible, sinon False
+    """
+    isCoordonneeCorrecte(grille, coord)
+
+    return grille[coord[0]][coord[1]][const.VISIBLE]
+
+def setVisibleGrilleDemineur(grille: list, coord: tuple, visible: bool) -> None:
+    """
+    Cette fonction change le paramètre de visibilité d'une cellule de la grille
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :param visible:
+    :return:
+    """
+    isCoordonneeCorrecte(grille, coord)
+
+    setVisibleCellule(grille[coord[0]][coord[1]], visible)
+
+    return None
+
+def contientMineGrilleDemineur(grille: list, coord: tuple) -> bool:
+    """
+    Cette fonction vérifie si la cellule de la grille est une Mine ou non
+
+    :param grille: liste conforme à une liste de démineur
+    :param coord: tuple conforme à une coordonnée
+    :return: True sir la cellule contient une mine, sinon False
+    """
+
+    isCoordonneeCorrecte(grille, coord)
+    return contientMineCellule(grille[coord[0]][coord[1]])
