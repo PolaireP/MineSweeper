@@ -242,3 +242,20 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
         setContenuCellule(grille[x][y], const.ID_MINE)
 
     return None
+
+def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
+    """
+    Cette fonction ajoute pour chaque cellule le nombre de mine autour
+
+    :param grille: grille de démineur
+    :return: rien
+    """
+    for i in range(getNbLignesGrilleDemineur(grille)):
+        for j in range(getNbColonnesGrilleDemineur(grille)):
+            if getContenuCellule(grille[i][j]) != -1:
+                voisins = getCoordonneeVoisinsGrilleDemineur(grille, (i, j))
+                for k in range(len(voisins)):
+                    cell = voisin[k]
+                    if getContenuCellule(grille[cell[0]][cell[1]]) == -1 :
+                        setContenuCellule(grille[i][j], getContenuCellule(grille[i][j])+1)
+    return None
