@@ -303,3 +303,19 @@ def getMinesRestantesGrilleDemineur(grille: list) -> int:
             if getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG :
                 compte += 1
     return getNbMinesGrilleDemineur(grille) - compte
+
+def gagneGrilleDemineur(grille: list) -> bool:
+    """
+    La fonction vérifie si la partie est gagnée ou non
+
+    :param grille: grille du démineur
+    :return: True si la partie est gagnée, False sinon
+    """
+    gagner = True
+    for ligne in grille :
+        for case in ligne :
+            if getContenuCellule(case) != const.ID_MINE and isVisibleCellule(case) != True :
+                gagner = False
+            elif getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == True :
+                gagner = False
+    return gagner
