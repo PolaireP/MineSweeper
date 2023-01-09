@@ -279,3 +279,13 @@ def getNbMinesGrilleDemineur(grille: list) -> int:
             if cellule[const.CONTENU] == const.ID_MINE:
                 compte += 1
     return compte
+
+def getAnnotationGrilleDemineur(grille: list, coord: tuple) -> str:
+    """
+    Cette fonction récupère l'annotation d'une cellule de la grille.
+
+    :param grille: grille du démineur
+    :param coord: coordonnées de la cellule
+    :return: Annotation de la cellule
+    """
+    return getAnnotationCellule(grille[coord[0]][coord[1]])
