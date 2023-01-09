@@ -318,6 +318,8 @@ def gagneGrilleDemineur(grille: list) -> bool:
                 gagner = False
             elif getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == True :
                 gagner = False
+            elif getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == False and getAnnotationCellule(case) != const.FLAG :
+                gagner = False
     return gagner
 
 def perduGrilleDemineur(grille: list) -> bool:
