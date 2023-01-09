@@ -241,6 +241,8 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
 
         setContenuCellule(grille[x][y], const.ID_MINE)
 
+    compterMinesVoisinesGrilleDemineur(grille)
+
     return None
 
 def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
@@ -255,7 +257,7 @@ def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
             if getContenuCellule(grille[i][j]) != -1:
                 voisins = getCoordonneeVoisinsGrilleDemineur(grille, (i, j))
                 for k in range(len(voisins)):
-                    cell = voisin[k]
+                    cell = voisins[k]
                     if getContenuCellule(grille[cell[0]][cell[1]]) == -1 :
                         setContenuCellule(grille[i][j], getContenuCellule(grille[i][j])+1)
     return None
