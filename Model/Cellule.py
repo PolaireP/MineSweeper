@@ -125,3 +125,19 @@ def isAnnotationCorrecte(annotation: str) -> bool:
     :return: True si elle vaut None, const.FLAG ou const.DOUTE, sinon False
     """
     return annotation in [None, const.FLAG, const.DOUTE]
+
+
+def getAnnotationCellule(cellule: dict) -> str:
+    """
+    Cette fonction récupère l'annotation d'une cellule.
+
+    :param cellule: dictionnaire de type cellule
+    :return: chaîne de carractère stocké comme annotation par la cellule
+    """
+    if type_cellule(cellule) != True :
+        raise TypeError("getAnnotationCellule : le paramètre valeur_du paramètre n’est pas une cellule")
+    if const.ANNOTATION not in cellule :
+        ret = None
+    else :
+        ret = cellule[const.ANNOTATION]
+    return ret
