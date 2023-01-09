@@ -319,3 +319,17 @@ def gagneGrilleDemineur(grille: list) -> bool:
             elif getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == True :
                 gagner = False
     return gagner
+
+def perduGrilleDemineur(grille: list) -> bool:
+    """
+    Cette fonction vérifie si une partie est perdue
+
+    :param grille: grille du démineur
+    :return: True si la partie est perdue, False sinon
+    """
+    perdu = False
+    for ligne in grille :
+        for case in ligne :
+            if getContenuCellule(case) == const.ID_MINE and isVisibleCellule(case) == True :
+                perdu = True
+    return perdu
