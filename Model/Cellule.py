@@ -141,3 +141,23 @@ def getAnnotationCellule(cellule: dict) -> str:
     else :
         ret = cellule[const.ANNOTATION]
     return ret
+
+def changeAnnotationCellule(cellule: dict) -> None:
+    """
+    Cette fonction change l'annotation d'une cellule
+
+    :param cellule: dictionnaire de type cellule
+    :return: rien
+    """
+    if type_cellule(cellule) != True:
+        raise TypeError("changeAnnotationCellule : le paramètre n’est pas une cellule")
+
+    if cellule[const.ANNOTATION] == None :
+        ret = const.FLAG
+    elif cellule[const.ANNOTATION] == const.FLAG :
+        ret = const.DOUTE
+    else :
+        ret = None
+    cellule[const.ANNOTATION] = ret
+
+    return None
