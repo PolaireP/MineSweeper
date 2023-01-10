@@ -376,7 +376,15 @@ def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
     return vue
 
 def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
+    """
+    Cette fonction permet de rendre visible les cases voisines si
+    le nombre de cases voisine doté d'un drapeau est le même que
+    celui dans le contenu de la case.
 
+    :param grille: grille du démineur
+    :param coord: coordonnée de la case
+    :return: Ensemble des coordonnées des cases à rendre visible
+    """
     coordonnees_decouvertes = set()
     cellulesVerif = [coord]
 
@@ -394,9 +402,58 @@ def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
             # la fonction rend toutes les autres cases voisines visibles
             if getContenuGrilleDemineur(grille, cellule_courante) == nb_drapeaux_voisinage:
                 for voisin in getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante):
-                    if getAnnotationGrilleDemineur(grille, voisin) != const.FLAG and voisin not in cellules_a_verifier and voisin not in coordonnees_decouvertes:
+                    if getAnnotationGrilleDemineur(grille, voisin) != const.FLAG and voisin not in cellulesVerif and voisin not in coordonnees_decouvertes:
                         setVisibleGrilleDemineur(grille, voisin, True)
                         cellulesVerif.append(voisin)
 
     return coordonnees_decouvertes
 
+def ajouterFlagsGrilleDemineur(grille: list, coord: tuple) -> set:
+    """
+    Ajoute un drapeau si c'est évident
+
+    :param grille: grille du démineur
+    :param coord: Coordonnée de la case
+    :return: ensemble des coordonnées à changer
+    """
+    # Initialisation des valeurs
+    ensemble = set()
+    contenu = getContenuGrilleDemineur(grille, coord)
+    compte = 0
+    tempo = []
+    # Pour chaque voisin l'ajouter à une liste temporaire si il n'est pas visible
+    # Et augmenter le compteur de 1
+    for voisin in getCoordonneeVoisinsGrilleDemineur(grille, coord):
+        if isVisibleGrilleDemineur(grille, voisin) != True :
+            compte += 1
+            tempo.append(voisin)
+    # Si le compteur est égal au nombre contenu dans la case
+    # Alors on ajoute les cases stockées à notre ensemble
+    if compte == contenu :
+        for case in tempo :
+            ensemble.add(case)
+    return ensemble
+
+def simplifierToutGrilleDemineur(grille: list) -> tuple:
+    """
+    Cette fonction simplifie toute la grille du démineur
+
+    :param grille: grille du démineur
+    :return: ensemble des cases visibles et marqué d'un drapeau
+    """
+
+    #Initialisation des ensembles stockant les cases visibles et les Flags
+    totalFlag = set()
+    totalVisible = set()
+
+    #Découverte de la première case
+    decouvrirGrilleDemineur(grille, (0, 0))
+
+    # Tant que on a pas gagné on lance la simplification et l'ajout de drapeau et on stock les cases
+    while gagneGrilleDemineur(grille) == False :
+        for i in range(getNbLignesGrilleDemineur(grille)):
+            for j in range(getNbColonnesGrilleDemineur(grille)):
+                totalVisible.union( simplifierGrilleDemineur(grille, (i, j) ) )
+                totalFlag.union( ajouterFlagsGrilleDemineur(grille, (i, j)) )
+
+    return(totalVisible, totalFlag)
