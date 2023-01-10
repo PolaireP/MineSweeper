@@ -25,37 +25,45 @@ def construireCoordonnee(num_ligne: int, num_colonne: int) -> tuple:
 
     Cette fonction renvoie un tuple sous la forme (num_ligne, num_colonne)
 
-    :param num_ligne: numéro de ligne, entier positif
-    :param num_colonne: numéro de colonne, entier positif
+    :param num_ligne: entier positif représentant numéro de ligne
+    :param num_colonne: entier positif représentant le numéro de colonne
     :return: tuple (num_ligne, num colonne)
     """
 
+    # Test si le numéro de ligne et numéro de colonne sont des entiers
     if type(num_ligne) != int or type(num_colonne) != int :
         raise TypeError(f"construireCoordonnee : Le numéro de ligne {type(num_ligne)} ou le numéro de colonne {type(num_colonne)} ne sontpas des entiers")
+    # Test si le numéro de ligne ou de colonnes sont positif
     elif num_ligne < 0 or num_colonne < 0 :
         raise ValueError(f"construireCoordonnee : Le numéro de ligne {num_ligne} ou de colonne {num_colonne} ne sont pas positifs.")
 
     return (num_ligne, num_colonne)
 
+
 def getLigneCoordonnee(coord: tuple) -> int:
     """
     Récupère le numéro de ligne de la coordonnée.
 
-    :param coord: tuple contenant un numéro de ligne et un numéro de colonne
-    :return: entier num_ligne
+    :param coord: tuple conforme à une coordonnée
+    :return: entier représentant le numéro de ligne
     """
+    # Test si la coordonnée est conforme
     if type_coordonnee(coord) != True :
         raise TypeError("getLigneCoordonnee : Le paramètre n’est pas une coordonnée")
+
     return coord[0]
+
 
 def getColonneCoordonnee(coord: tuple) -> int:
     """
     Récupère le numéro de colonne de la coordonnée.
 
-    :param coord: tuple contenant un numéro de ligne et un numéro de colonne
-    :return: entier num_colonne
+    :param coord: tuple conforme à une coordonnée
+    :return: entier représentant le numéro de colonne
     """
+    # Test si la coordonnée est conforme
     if type_coordonnee(coord) != True :
         raise TypeError("getColonneCoordonnee : Le paramètre n’est pas une coordonnée")
+
     return coord[1]
 
