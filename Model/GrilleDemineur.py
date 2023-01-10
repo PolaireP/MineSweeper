@@ -350,7 +350,7 @@ def reinitialiserGrilleDemineur(grille: list) -> None:
 
     return None
 
-def decouvrirGrilleDemineur(grille: list, coord: tuple) -> None:
+def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
     """
     Cette fonction découvre une cellule à la position coord d'une
     grille et découvre son voisinage automatiquement si la cellule
@@ -374,3 +374,29 @@ def decouvrirGrilleDemineur(grille: list, coord: tuple) -> None:
         aVoir.remove(cellule)
 
     return vue
+
+def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
+
+    coordonnees_decouvertes = set()
+    cellulesVerif = [coord]
+
+    while len(cellulesVerif) > 0:
+        cellule_courante = cellulesVerif.pop()
+        #  vérifie que la visibilité de la cellule
+        if isVisibleGrilleDemineur(grille, cellule_courante):
+            coordonnees_decouvertes.add(cellule_courante)
+            # compte le nombre de drapeaux dans le voisinage de cette case
+            nb_drapeaux_voisinage = 0
+            for voisin in getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante):
+                if getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
+                    nb_drapeaux_voisinage += 1
+            # Si ce nombre correspond exactement au contenu de la case,
+            # la fonction rend toutes les autres cases voisines visibles
+            if getContenuGrilleDemineur(grille, cellule_courante) == nb_drapeaux_voisinage:
+                for voisin in getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante):
+                    if getAnnotationGrilleDemineur(grille, voisin) != const.FLAG and voisin not in cellules_a_verifier and voisin not in coordonnees_decouvertes:
+                        setVisibleGrilleDemineur(grille, voisin, True)
+                        cellulesVerif.append(voisin)
+
+    return coordonnees_decouvertes
+
