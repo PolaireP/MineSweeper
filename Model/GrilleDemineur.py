@@ -349,3 +349,28 @@ def reinitialiserGrilleDemineur(grille: list) -> None:
             reinitialiserCellule(case)
 
     return None
+
+def decouvrirGrilleDemineur(grille: list, coord: tuple) -> None:
+    """
+    Cette fonction découvre une cellule à la position coord d'une
+    grille et découvre son voisinage automatiquement si la cellule
+    n'as pas de mine autour.
+
+    :param grille: grille du démineur
+    :param coord: coordonnée de la case à découvrir
+    :return: None
+    """
+
+    vue = set()
+    aVoir = [coord]
+
+    while len(aVoir) != 0:
+        cellule = aVoir[0]
+        if cellule not in vue :
+            setVisibleGrilleDemineur(grille, cellule, True)
+            if getContenuGrilleDemineur(grille, cellule) == 0 :
+                aVoir += getCoordonneeVoisinsGrilleDemineur(grille, cellule)
+            vue.add(cellule)
+        aVoir.remove(cellule)
+
+    return vue
