@@ -511,17 +511,21 @@ def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
         #  vérifie que la visibilité de la cellule
         if isVisibleGrilleDemineur(grille, cellule_courante):
             coordonnees_decouvertes.add(cellule_courante)
-            # Initialisation du compteur
+            # Initialisation du compteur et du voisinage
             nb_drapeaux_voisinage = 0
-            # Comptage des cellules doté d'un drapeau dans le voisinage
-            for voisin in getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante):
-                if getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
+            voisinage = getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante)
+            # Comptage des cellules doté d'un drapeau dans le voisinage, ces cellules
+            # sont enlevées de la liste voisinage
+            for i in range(len(voisinage)-1, -1, -1):
+                if getAnnotationGrilleDemineur(grille, voisinage[i]) == const.FLAG:
                     nb_drapeaux_voisinage += 1
+                    voisinage.pop(i)
+
             # Si ce nombre correspond exactement au contenu de la cellule, la fonction
             # rend toutes les autres cases voisines visibles et les ajoute dans les cellules à vérifier.
             if getContenuGrilleDemineur(grille, cellule_courante) == nb_drapeaux_voisinage:
-                for voisin in getCoordonneeVoisinsGrilleDemineur(grille, cellule_courante):
-                    if getAnnotationGrilleDemineur(grille, voisin) != const.FLAG and voisin not in cellulesVerif and voisin not in coordonnees_decouvertes:
+                for voisin in voisinage:
+                    if voisin not in cellulesVerif and voisin not in coordonnees_decouvertes:
                         setVisibleGrilleDemineur(grille, voisin, True)
                         cellulesVerif.append(voisin)
 
@@ -551,6 +555,8 @@ def ajouterFlagsGrilleDemineur(grille: list, coord: tuple) -> set:
     # Alors on ajoute les cases stockées à notre ensemble
     if compte == contenu :
         for case in tempo :
+            while getAnnotationCellule(grille[case[0]][case[1]]) != const.FLAG:
+                changeAnnotationCellule(grille[case[0]][case[1]])
             ensemble.add(case)
     return ensemble
 
@@ -563,19 +569,46 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
     :return: ensemble des cases visibles et marqué d'un drapeau
     """
 
-    #Initialisation des ensembles stockant les cases visibles et les Flags
+    # Initialisation des ensembles stockant les cases visibles et les Flags et de la variable decouvre
     totalFlag = set()
     totalVisible = set()
+    decouvre = True
 
-    #Découverte de la première case
-    decouvrirGrilleDemineur(grille, (0, 0))
+    # Tant que on a pas gagné ou que totalFlag et totalVisible ne valent pas pareil qu'au tour d'avant
+    while gagneGrilleDemineur(grille) == False and decouvre == True:
+        # Création des copies des ensembles
+        copieVisible = totalVisible.copy()
+        copieFlag = totalFlag.copy()
 
-    # Tant que on a pas gagné on lance la simplification et l'ajout de drapeau
-    # on stocke la sortie des deux fonctions dans deux ensemble différents
-    while gagneGrilleDemineur(grille) == False :
-        for i in range(getNbLignesGrilleDemineur(grille)):
-            for j in range(getNbColonnesGrilleDemineur(grille)):
-                totalVisible.union( simplifierGrilleDemineur(grille, (i, j) ) )
-                totalFlag.union( ajouterFlagsGrilleDemineur(grille, (i, j)) )
+        # Pour k de 1 à 0 compris
+        for k in range(1, -1, -1):
+            # Se déplacer dans chaque ligne de la grille
+            for i in range(getNbLignesGrilleDemineur(grille)):
+                # En fonction des lignes et de l'avancement de k, prendre une cellule sur deux
+                # l'avancement de k inversera la cellule prise au 2eme passage
+                for j in range((i%2)+k, getNbColonnesGrilleDemineur(grille), 2):
+
+                    # Si la cellule est visible et qu'elle n'a pas de drapeau
+                    if isVisibleGrilleDemineur(grille, construireCoordonnee(i, j)) and getAnnotationGrilleDemineur(grille, construireCoordonnee(i, j)) != const.FLAG :
+
+                        # Initialiser le voisinage et un compteur
+                        voisinage = getCoordonneeVoisinsGrilleDemineur(grille, (i, j))
+                        ct = 0
+
+                        # Compteur pour la vérification permettant de passer les cellules dont les voisins sont soit déjà visible
+                        # soit avec des drapeaux.
+                        for voisin in voisinage :
+                            if isVisibleGrilleDemineur(grille, voisin) or getAnnotationGrilleDemineur(grille, voisin) == const.FLAG :
+                                ct += 1
+                        # Si la cellule a au moins un voisin non visible sans drapeau, lancer la simplification et l'ajout
+                        # de drapeaux.
+                        if ct != len(voisinage):
+                            totalVisible.update(simplifierGrilleDemineur(grille, (i, j)))
+                            totalFlag.update(ajouterFlagsGrilleDemineur(grille, (i, j)))
+        # Si les ensemble n'ont pas changé depuis la dernière boucle ( cas où la simplification totale est impossible )
+        # alors la condition decouvre passe à False et arr^ète la boucle while
+        if totalVisible == copieVisible and totalFlag == copieFlag :
+            decouvre = False
+
 
     return(totalVisible, totalFlag)

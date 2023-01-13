@@ -155,6 +155,7 @@ def contientMineCellule(cellule: dict) -> bool :
 def isAnnotationCorrecte(annotation: str) -> bool:
     """
     Cette fonction reçois une annotation et vérifie si elle est correcte
+
     :param annotation: chaine de caractère
     :return: True si elle vaut None, const.FLAG ou const.DOUTE, sinon False
     """
